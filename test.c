@@ -61,12 +61,8 @@ Word *new_word(const char *word, size_t line, size_t col) {
   return node;
 }
 
-int main(int argc, char *argv[]) {
-  if (argc != 2) {
-    fprintf(stderr, "USAGE : %s <filename>\n", argv[0]);
-    exit(1);
-  }
-  char *buffer = s_read_file(argv[1]);
+int main(void) {
+  char *buffer = s_read_file("lorem_plus.txt");
 
   // START LABA
   Laba *laba = init_laba(char *, 10);
@@ -91,15 +87,12 @@ int main(int argc, char *argv[]) {
   }
   push_laba(laba, Word *, NULL);
 
-  // fix this part
-  {
-    i = 0;
-    Word *word = index_laba(laba, i);
-    while (word != NULL) {
-      word = index_laba(laba, i);
-      printf("Word : %s", word->word);
-      ++i;
-    }
+  i = 0;
+  Word *word = index_laba(laba, i);
+  while (word != NULL) {
+    word = index_laba(laba, i);
+    printf("Word : %s", word->word);
+    ++i;
   }
 
   free(buffer);
