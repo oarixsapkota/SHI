@@ -1,11 +1,9 @@
-#include <ctype.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define LABA_IMPLEMENTATION
-#include "laba.h"
+#define SHI_OPA_IMPLEMENTATION
+#include "shi_opa.h"
 
 char *s_read_file(const char *filename) {
   FILE *file = fopen(filename, "r");
@@ -55,17 +53,11 @@ typedef struct {
   size_t col;
 } Word;
 
-Word *new_word(const char *word, size_t line, size_t col) {
-  Word *node = (Word *)malloc(sizeof(Word));
-  *node = (Word){(char *)word, line, col};
-  return node;
-}
-
 int main(void) {
-  char *buffer = s_read_file("lorem_plus.txt");
+  char *buffer = s_read_file("test.txt");
 
-  // START LABA
-  Laba *laba = init_laba(char *, 10);
+  __mem_block__ *pool_head = init_mem_block(sizeof(Word), 1);
+  __mem_block__ *pool = pool_head;
 
   size_t i = 0, line = 1, col = 1;
   while (buffer[i] != '\0') {
@@ -81,19 +73,24 @@ int main(void) {
       continue;
     }
     size_t tcol = col;
-    char *word = get_word(buffer, &i, &col);
-    push_laba(laba, Word *, new_word(word, line, tcol));
+    char *word_value = get_word(buffer, &i, &col);
+    Word word = (Word){word_value, line, tcol};
+    push_to_mem_block(&pool, &word);
     ++i;
   }
-  push_laba(laba, Word *, NULL);
 
   i = 0;
-  Word *word = index_laba(laba, i);
+  Word *word = at_mem_block(pool_head, i);
   while (word != NULL) {
-    word = index_laba(laba, i);
-    printf("Word : %s", word->word);
+    if (i != 0) {
+      printf("Word : %s\n", word->word);
+      free(word->word);
+    }
+    word = at_mem_block(pool_head, i);
     ++i;
   }
+
+  free_mem_chain(pool_head);
 
   free(buffer);
   return 0;

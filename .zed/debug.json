@@ -6,7 +6,7 @@
       "args": ["-j8"],
       "cwd": "$ZED_WORKTREE_ROOT",
     },
-    "program": "$ZED_WORKTREE_ROOT/laba",
+    "program": "$ZED_WORKTREE_ROOT/shi",
     "request": "launch",
     "adapter": "CodeLLDB",
   },
