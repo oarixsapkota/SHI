@@ -3,7 +3,7 @@ CFLAG = -g -O0 -Wall -Wextra
 BUILD = build
 
 HEADERS = $(wildcard *.h)
-TESTS = $(patsubst %.h, $(BUILD)/test_%, $(HEADERS))
+TESTS = $(patsubst %.h, $(BUILD)/%, $(HEADERS))
 
 .PHONY: all debug clean format
 
@@ -14,7 +14,7 @@ prepare:
 	mkdir -p $(BUILD)
 
 # Build a test for headers
-$(BUILD)/test_%: %.h
+$(BUILD)/%: %.h
 	$(CC) $(CFLAG) -x c -DSHI_OPA_TEST $< -o $@
 
 # Clean build
