@@ -52,8 +52,7 @@ void free_mem_chain(__mem_block__ *head);
 #define shi_opa_init(type, block_capa)                                         \
   (SHI_OPA *)init_mem_block(sizeof(type), block_capa)
 /// Push Object to Object Pool.
-#define shi_opa_push(pool, object)                                             \
-  push_to_mem_block((SHI_OPA **)&pool, &object)
+#define shi_opa_push(pool, object) push_to_mem_block((SHI_OPA **)&pool, &object)
 /// Get object at `n' index from Object Pool.
 #define shi_opa_index(pool_head, index)                                        \
   at_mem_block((SHI_OPA *)pool_head, index)
@@ -61,6 +60,50 @@ void free_mem_chain(__mem_block__ *head);
 #define shi_opa_free(pool_head) free_mem_chain((SHI_OPA *)pool_head)
 
 #endif // SHI_OPA_H
+
+// =================
+// TESTING & EXAMPLE
+// =================
+#ifdef SHI_OPA_TEST
+
+#include <stddef.h>
+#include <stdio.h>
+
+#define SHI_OPA_IMPLEMENTATION
+
+typedef struct {
+  char value;
+  size_t col;
+} Obj;
+
+int main(void) {
+  char *buffer = "This is some dummy text";
+
+  SHI_OPA *pool_head = shi_opa_init(Obj, 5);
+  SHI_OPA *pool = pool_head;
+
+  for (size_t i = 0; buffer[i] != '\0'; ++i) {
+    // skip whitespace.
+    if (buffer[i] == ' ')
+      continue;
+    Obj obj = (Obj){buffer[i], i};
+    shi_opa_push(pool, obj);
+  }
+  Obj t_obj = (Obj){'\0', 0};
+  shi_opa_push(pool, t_obj);
+
+  for (size_t i = 0;; ++i) {
+    Obj *obj = shi_opa_index(pool_head, i);
+    if (obj->value == '\0')
+      break;
+    printf("CHAR : %c\n", obj->value);
+  }
+
+  shi_opa_free(pool_head);
+  return 0;
+}
+
+#endif // SHI_OPA_TEST
 
 // ===============
 // IMPLEMENTATION

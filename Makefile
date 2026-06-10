@@ -1,20 +1,26 @@
 CC = clang
 CFLAG = -g -O0 -Wall -Wextra
-CMAKE = cmake
-SHI = shi
+BUILD = build
+
+HEADERS = $(wildcard *.h)
+TESTS = $(patsubst %.h, $(BUILD)/test_%, $(HEADERS))
 
 .PHONY: all debug clean format
 
-all: format
-	$(CC) $(CFLAG) test.c -o $(SHI)
+all: prepare $(TESTS)
 
-alaba: format
-	$(CC) $(CFLAG) -x c -DLABA_IMPLEMENTATION shi_opa.h -o $(SHI)
+# Ensure build directory exists
+prepare:
+	mkdir -p $(BUILD)
+
+# Build a test for headers
+$(BUILD)/test_%: %.h
+	$(CC) $(CFLAG) -x c -DSHI_OPA_TEST $< -o $@
 
 # Clean build
 clean:
-	rm -rf $(SHI)
+	rm -rf $(BUILD)
 
-# Format src files
+# Format all header files
 format:
-	clang-format -i shi_opa.h test.c
+	clang-format -i $(HEADERS)
