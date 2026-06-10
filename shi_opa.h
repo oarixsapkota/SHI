@@ -45,8 +45,22 @@ void *at_mem_block(__mem_block__ *head, size_t index);
 /// function to free the entire linked memory chain
 void free_mem_chain(__mem_block__ *head);
 
-#endif // SHI_OPA_H
+// macro interface.
+typedef __mem_block__ SHI_OPA;
 
+/// Init Object Pool.
+#define shi_opa_init(type, block_capa)                                         \
+  (SHI_OPA *)init_mem_block(sizeof(type), block_capa)
+/// Push Object to Object Pool.
+#define shi_opa_push(pool, object)                                             \
+  push_to_mem_block((__mem_block__ **)&pool, &object)
+/// Get object at `n' index from Object Pool.
+#define shi_opa_index(pool_head, index)                                        \
+  at_mem_block((__mem_block__ *)pool_head, index)
+/// Destroy Object Pool.
+#define shi_opa_free(pool_head) free_mem_chain((__mem_block__ *)pool_head)
+
+#endif // SHI_OPA_H
 
 // ===============
 // IMPLEMENTATION

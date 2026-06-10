@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,8 +57,8 @@ typedef struct {
 int main(void) {
   char *buffer = s_read_file("test.txt");
 
-  __mem_block__ *pool_head = init_mem_block(sizeof(Word), 1);
-  __mem_block__ *pool = pool_head;
+  SHI_OPA *pool_head = shi_opa_init(Word, 10);
+  SHI_OPA *pool = pool_head;
 
   size_t i = 0, line = 1, col = 1;
   while (buffer[i] != '\0') {
@@ -75,22 +76,22 @@ int main(void) {
     size_t tcol = col;
     char *word_value = get_word(buffer, &i, &col);
     Word word = (Word){word_value, line, tcol};
-    push_to_mem_block(&pool, &word);
+    shi_opa_push(pool, word);
     ++i;
   }
 
   i = 0;
-  Word *word = at_mem_block(pool_head, i);
+  Word *word = shi_opa_index(pool_head, i);
   while (word != NULL) {
     if (i != 0) {
       printf("Word : %s\n", word->word);
       free(word->word);
     }
-    word = at_mem_block(pool_head, i);
+    word = shi_opa_index(pool_head, i);
     ++i;
   }
 
-  free_mem_chain(pool_head);
+  shi_opa_free(pool_head);
 
   free(buffer);
   return 0;
