@@ -30,7 +30,7 @@ void write_file(const char *path, const char *buffer, const char *mode);
 // =================
 // TESTING & EXAMPLE
 // =================
-#ifdef SHI_OPA_TEST
+#ifdef SHI_TEST
 
 #include <stdio.h>
 #define SHI_FILE_IMPLEMENTATION
@@ -53,7 +53,7 @@ int main() {
   return 0;
 }
 
-#endif // SHI_OPA_TEST
+#endif // SHI_TEST
 
 // ===============
 // IMPLEMENTATION

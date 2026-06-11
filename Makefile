@@ -15,7 +15,7 @@ prepare:
 
 # Build a test for headers
 $(BUILD)/%: %.h
-	$(CC) $(CFLAG) -x c -DSHI_OPA_TEST $< -o $@
+	$(CC) $(CFLAG) -x c -DSHI_TEST $< -o $@
 
 # Clean build
 clean:

@@ -64,7 +64,7 @@ void free_mem_chain(__mem_block__ *head);
 // =================
 // TESTING & EXAMPLE
 // =================
-#ifdef SHI_OPA_TEST
+#ifdef SHI_TEST
 
 #include <stddef.h>
 #include <stdio.h>
@@ -103,7 +103,7 @@ int main(void) {
   return 0;
 }
 
-#endif // SHI_OPA_TEST
+#endif // SHI_TEST
 
 // ===============
 // IMPLEMENTATION
