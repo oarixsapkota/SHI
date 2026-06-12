@@ -1,5 +1,4 @@
-![Banner](./img/shi.png)
-
+# SHI
 SINGLE-HEADER-IMPLEMENTATION library
 
 ## 📄 License

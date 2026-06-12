@@ -38,7 +38,8 @@ void write_file(const char *path, const char *buffer, const char *mode);
 int main() {
   size_t bytes = 0;
   char *read_buffer = shi_file_read("shi_file.h", &bytes);
-  printf("%-20s...\nRead %lu bytes.\n", read_buffer, bytes);
+  printf("Read %lu bytes.\n", bytes);
+  (void)read_buffer;
 
   shi_file_write("build/test.txt", "first line.");
 
@@ -100,7 +101,7 @@ void write_file(const char *path, const char *buffer, const char *mode) {
     fprintf(stderr, "Failed to open file: %s\n", path);
     exit(EXIT_FAILURE);
   }
-  if(buffer)
+  if (buffer)
     fputs(buffer, file);
   fclose(file);
 }

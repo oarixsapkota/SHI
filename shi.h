@@ -15,7 +15,7 @@
 
 #define SHI_IMPLEMENTATION
 
-int main () { return 0; }
+int main() { return 0; }
 
 #endif // SHI_TEST
 

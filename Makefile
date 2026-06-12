@@ -1,26 +1,30 @@
-CC = clang
-CFLAG = -g -O0 -Wall -Wextra
-BUILD = build
+# --- Configuration ---
+CC      := clang
+CFLAGS  := -g -O0 -Wall -Wextra
+BUILD   := build
 
-HEADERS = $(wildcard *.h)
-TESTS = $(patsubst %.h, $(BUILD)/%, $(HEADERS))
+HEADERS := $(wildcard *.h)
+TESTS   := $(patsubst %.h, $(BUILD)/%, $(HEADERS))
 
-.PHONY: all debug clean format
+.PHONY: all clean format prepare
 
-all: prepare $(TESTS)
+all: prepare format $(TESTS)
 
-# Ensure build directory exists
-prepare:
-	mkdir -p $(BUILD)
+prepare: | $(BUILD)
 
-# Build a test for headers
+$(BUILD):
+	@mkdir -p $@
+
 $(BUILD)/%: %.h
-	$(CC) $(CFLAG) -x c -DSHI_TEST $< -o $@
+	@echo "Compiling $< -> $@"
+	@$(CC) $(CFLAGS) -x c -DSHI_TEST $< -o $@
 
 # Clean build
 clean:
-	rm -rf $(BUILD)
+	@echo "Cleaning build artifacts..."
+	@rm -rf $(BUILD)
 
 # Format all header files
 format:
-	clang-format -i $(HEADERS)
+	@echo "Formatting headers..."
+	@clang-format -i $(HEADERS)
